@@ -167,6 +167,11 @@ class SEOContent implements SEOContentInterface
         return $this;
     }
 
+    public function getUri(): ?string
+    {
+        return $this->getTranslation()->getUri();
+    }
+
     public function getRobot(): ?SEOContentRobotInterface
     {
         /** @var SEOContentRobotInterface|false $robot */

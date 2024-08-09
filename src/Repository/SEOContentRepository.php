@@ -31,6 +31,7 @@ class SEOContentRepository extends EntityRepository implements SEOContentReposit
             ->setParameter('uri', $uri)
             ->setParameter('locale', $locale)
             ->getQuery()
+            ->setMaxResults(1)
             ->getOneOrNullResult()
         ;
     }
