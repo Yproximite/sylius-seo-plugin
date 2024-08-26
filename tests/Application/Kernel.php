@@ -7,6 +7,9 @@ namespace Tests\Dedi\SyliusSEOPlugin\Application;
 use PSS\SymfonyMockerContainer\DependencyInjection\MockerContainer;
 use Sylius\Bundle\CoreBundle\SyliusCoreBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
@@ -35,6 +38,24 @@ final class Kernel extends BaseKernel
                 continue;
             }
             yield from $this->registerBundlesFromFile($bundlesFile);
+        }
+    }
+
+    private function configureContainer(ContainerConfigurator $container, LoaderInterface $loader, ContainerBuilder $builder): void
+    {
+        $configDir = $this->getConfigDir();
+
+        foreach ($this->getConfigurationDirectories() as $confDir) {
+            $container->import($confDir.'/{packages}/*.{php,yaml}');
+            $container->import($confDir.'/{packages}/'.$this->environment.'/*.{php,yaml}');
+        }
+
+        if (is_file($configDir.'/services.yaml')) {
+            $container->import($configDir.'/services.yaml');
+            $container->import($configDir.'/{services}_'.$this->environment.'.yaml');
+        } else {
+            $container->import($configDir.'/{services}.php');
+            $container->import($configDir.'/{services}_'.$this->environment.'.php');
         }
     }
 
