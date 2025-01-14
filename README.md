@@ -34,5 +34,6 @@ It provides integration for Google Analytics and Google Tag Manager through your
 ## Documentation
 
 - [Installation](doc/INSTALL.md)
+- [Upgrade to 4.0](doc/UPGRADE-4.0.md)
 - [Features](doc/FEATURES.md)
 - [Contribute](doc/CONTRIBUTE.md)
